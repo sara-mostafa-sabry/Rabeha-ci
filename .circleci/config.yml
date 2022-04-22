@@ -13,6 +13,17 @@ jobs:
     steps:
       - run: echo world!
 
+  print_vals:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - run:
+          name: "print values"
+          command: |
+            echo << pipeline.id >>
+            echo END!
+
+
 workflows:
   welcome:
     jobs:
@@ -20,3 +31,8 @@ workflows:
       - print_world:
           requires:
             - print_hello
+      - print_vals:
+          requires:
+            - print_hello
+            - print_world
+            
