@@ -22,7 +22,11 @@ jobs:
           command: |
             echo << pipeline.id >>
             echo END!
-
+      - run:
+          name: "print env values"
+          command: |
+            echo ${NAME}
+            
 
 workflows:
   welcome:
