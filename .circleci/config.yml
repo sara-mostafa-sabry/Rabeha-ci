@@ -18,7 +18,7 @@ jobs:
     <<: *defults
     steps:
       - attach_workspace:
-          at: ~/output.txt
+          at: ~/
       - run: cat ~/output.txt
 
 workflows:
