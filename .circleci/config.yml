@@ -5,39 +5,26 @@ defaults: &defults
       - image: circleci/node:13.8.0
 
 jobs: 
-  print_hello: 
+  save_hello_world_output: 
     <<: *defults
     steps:
-      - run: echo Hello 
+      - run: echo "Hello world!" > ~/output.txt
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - output.txt
 
-  print_world:
+  print_output:
     <<: *defults
     steps:
-      - run: echo world!
-
-  print_vals:
-    <<: *defults
-    steps:
-      - run:
-          name: "print values"
-          command: |
-            echo << pipeline.id >>
-            echo END!
-      - run:
-          name: "print env values"
-          command: |
-            echo ${NAME}
-
+      - attach_workspace:
+          at: ~/output.txt
+      - run: cat ~/output.txt
 
 workflows:
   welcome:
     jobs:
-      - print_hello
-      - print_world:
+      - save_hello_world_output
+      - print_output:
           requires:
-            - print_hello
-      - print_vals:
-          requires:
-            - print_hello
-            - print_world
-            
+            - save_hello_world_output
